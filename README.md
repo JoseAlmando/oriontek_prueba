@@ -21,7 +21,24 @@ Una vez levantada la aplicación, accede a la documentación Swagger en:
 
 http://localhost:8081/swagger-ui/index.html
 
+## 🐳 Cómo levantar la aplicación con Docker Compose
 
+Asegúrate de tener **Docker** y **Docker Compose** instalados en tu máquina.
+
+### 🔧 Pasos para ejecutar
+
+1. **Construir y levantar los contenedores**
+   ```bash
+   docker compose up -d
+   ```
+
+   ```bash
+   mvn clean install
+   ```
+   
+   ```bash
+   mvn spring-boot:run
+   ```
 
 ---
 
