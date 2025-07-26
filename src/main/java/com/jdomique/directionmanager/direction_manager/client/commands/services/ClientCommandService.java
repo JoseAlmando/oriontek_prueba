@@ -6,15 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import com.jdomique.directionmanager.direction_manager.client.commands.dto.AddDirectionClientCommand;
+import com.jdomique.directionmanager.direction_manager.client.commands.dto.AddAddressClientCommand;
 import com.jdomique.directionmanager.direction_manager.client.commands.dto.CreateClientCommand;
 import com.jdomique.directionmanager.direction_manager.client.commands.dto.DeleteClientCommand;
-import com.jdomique.directionmanager.direction_manager.client.commands.dto.DeleteDirectionClientCommand;
+import com.jdomique.directionmanager.direction_manager.client.commands.dto.DeleteAddressClientCommand;
 import com.jdomique.directionmanager.direction_manager.client.commands.dto.UpdateClientCommand;
 import com.jdomique.directionmanager.direction_manager.client.commands.entities.ClientCommand;
-import com.jdomique.directionmanager.direction_manager.client.commands.entities.DirectionCommand;
+import com.jdomique.directionmanager.direction_manager.client.commands.entities.AddressCommand;
 import com.jdomique.directionmanager.direction_manager.client.commands.repository.ClientCommandRepository;
-import com.jdomique.directionmanager.direction_manager.client.commands.repository.DirectionCommandRepository;
+import com.jdomique.directionmanager.direction_manager.client.commands.repository.AddressCommandRepository;
 import com.jdomique.directionmanager.direction_manager.client.common.TOPICS;
 import com.jdomique.directionmanager.direction_manager.client.common.dto.ClientEvent;
 
@@ -25,7 +25,7 @@ public class ClientCommandService implements IClientCommandService {
   ClientCommandRepository clientCommandRepository;
 
   @Autowired
-  DirectionCommandRepository directionCommandRepository;
+  AddressCommandRepository addressCommandRepository;
 
   @Autowired
   KafkaTemplate<String, Object> kafkaTemplate;
@@ -87,12 +87,12 @@ public class ClientCommandService implements IClientCommandService {
   }
 
   @Override
-  public DirectionCommand postDirection(ClientEvent<AddDirectionClientCommand> event) {
+  public AddressCommand postAddress(ClientEvent<AddAddressClientCommand> event) {
 
-    boolean directionExist = directionCommandRepository.existsByDirectionAndClientId(event.getData().direction(),
+    boolean addressExist = addressCommandRepository.existsByAddressAndClientId(event.getData().address(),
         event.getData().clientId());
-    if (directionExist) {
-      throw new RuntimeException("Direction already added by client.");
+    if (addressExist) {
+      throw new RuntimeException("Address already added by client.");
 
     }
 
@@ -104,31 +104,31 @@ public class ClientCommandService implements IClientCommandService {
 
     ClientCommand client = optionalClient.get();
 
-    DirectionCommand direction = new DirectionCommand();
-    direction.setClient(client);
-    direction.setDirection(event.getData().direction());
+    AddressCommand address = new AddressCommand();
+    address.setClient(client);
+    address.setAddress(event.getData().address());
 
-    directionCommandRepository.save(direction);
+    addressCommandRepository.save(address);
 
-    ClientEvent<DirectionCommand> eventSend = new ClientEvent<DirectionCommand>(event.getEventType(), direction);
+    ClientEvent<AddressCommand> eventSend = new ClientEvent<AddressCommand>(event.getEventType(), address);
 
     kafkaTemplate.send(TOPICS.CLIENT_TOPIC, eventSend);
 
-    return direction;
+    return address;
   }
 
   @Override
-  public boolean deleteDirection(ClientEvent<DeleteDirectionClientCommand> event) {
-    Optional<DirectionCommand> optionalDirection = directionCommandRepository.findById(event.getData().directionId());
+  public boolean deleteAddress(ClientEvent<DeleteAddressClientCommand> event) {
+    Optional<AddressCommand> optionalAddress = addressCommandRepository.findById(event.getData().directionId());
 
-    if (optionalDirection.isEmpty()) {
+    if (optionalAddress.isEmpty()) {
       throw new RuntimeException("Client not exist.");
     }
 
-    DirectionCommand direction = optionalDirection.get();
-    directionCommandRepository.delete(direction);
+    AddressCommand address = optionalAddress.get();
+    addressCommandRepository.delete(address);
 
-    ClientEvent<DirectionCommand> eventSend = new ClientEvent<DirectionCommand>(event.getEventType(), direction);
+    ClientEvent<AddressCommand> eventSend = new ClientEvent<AddressCommand>(event.getEventType(), address);
 
     kafkaTemplate.send(TOPICS.CLIENT_TOPIC, eventSend);
 

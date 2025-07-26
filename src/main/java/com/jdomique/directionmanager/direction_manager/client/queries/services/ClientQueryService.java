@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jdomique.directionmanager.direction_manager.client.common.TOPICS;
 import com.jdomique.directionmanager.direction_manager.client.common.dto.ClientEvent;
 import com.jdomique.directionmanager.direction_manager.client.queries.entities.ClientQuery;
-import com.jdomique.directionmanager.direction_manager.client.queries.entities.DirectionQuery;
+import com.jdomique.directionmanager.direction_manager.client.queries.entities.AddressQuery;
 import com.jdomique.directionmanager.direction_manager.client.queries.repository.ClientQueryRepository;
 import com.jdomique.directionmanager.direction_manager.client.queries.repository.DirectionQueryRepository;
 
@@ -42,20 +42,20 @@ public class ClientQueryService implements IClientQueryService {
   }
 
   @Override
-  public Iterable<DirectionQuery> findAllDirections() {
+  public Iterable<AddressQuery> findAllDirections() {
     return directionQueryRepository.findAll();
   }
 
   @Override
-  public Iterable<DirectionQuery> findDirectionsByClientId(String clientId) {
+  public Iterable<AddressQuery> findDirectionsByClientId(String clientId) {
     return directionQueryRepository.findByClientId(clientId);
 
   }
 
   @Override
-  public DirectionQuery findDirectionById(Long directionId) {
+  public AddressQuery findDirectionById(Long directionId) {
 
-    Optional<DirectionQuery> optionalDirection = directionQueryRepository.findById(directionId);
+    Optional<AddressQuery> optionalDirection = directionQueryRepository.findById(directionId);
     if (optionalDirection.isEmpty()) {
       throw new RuntimeException("Client not exist.");
     }
@@ -97,22 +97,22 @@ public class ClientQueryService implements IClientQueryService {
         }
         break;
 
-      case ADDED_DIRECTION:
-        DirectionQuery newDirection = objectMapper.convertValue(
+      case ADDED_ADDRESS:
+        AddressQuery newDirection = objectMapper.convertValue(
             clientEvent.getData(),
-            DirectionQuery.class);
+            AddressQuery.class);
 
         ClientQuery client = clientQueryRepository.findById(newDirection.getClient().getId()).get();
         newDirection.setClient(client);
 
         directionQueryRepository.save(newDirection);
         break;
-      case DELETED_DIRECTION:
-        DirectionQuery deleteDirectiontMapper = objectMapper.convertValue(
+      case DELETED_ADDRESS:
+        AddressQuery deleteDirectiontMapper = objectMapper.convertValue(
             clientEvent.getData(),
-            DirectionQuery.class);
+            AddressQuery.class);
 
-        Optional<DirectionQuery> deleteDirectionOptional = directionQueryRepository
+        Optional<AddressQuery> deleteDirectionOptional = directionQueryRepository
             .findById(deleteDirectiontMapper.getId());
 
         if (deleteDirectionOptional.isPresent()) {

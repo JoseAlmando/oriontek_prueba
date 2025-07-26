@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jdomique.directionmanager.direction_manager.client.queries.entities.ClientQuery;
-import com.jdomique.directionmanager.direction_manager.client.queries.entities.DirectionQuery;
+import com.jdomique.directionmanager.direction_manager.client.queries.entities.AddressQuery;
 import com.jdomique.directionmanager.direction_manager.client.queries.services.IClientQueryService;
 
 @RestController
@@ -28,18 +28,18 @@ public class ClientQueryController {
     return clientQueryService.findById(clientId);
   }
 
-  @GetMapping("/directions")
-  public Iterable<DirectionQuery> findAllDirections() {
+  @GetMapping("/address")
+  public Iterable<AddressQuery> findAllDirections() {
     return clientQueryService.findAllDirections();
   }
 
-  @GetMapping("/{clientId}/direcciones")
-  public Iterable<DirectionQuery> findDirectionsByClient(@PathVariable String clientId) {
+  @GetMapping("/{clientId}/address")
+  public Iterable<AddressQuery> findDirectionsByClient(@PathVariable String clientId) {
     return clientQueryService.findDirectionsByClientId(clientId);
   }
 
-  @GetMapping("/direcciones/{directionId}")
-  public DirectionQuery getDireccionById(@PathVariable Long directionId) {
-    return clientQueryService.findDirectionById(directionId);
+  @GetMapping("/address/{addressId}")
+  public AddressQuery getDireccionById(@PathVariable Long addressId) {
+    return clientQueryService.findDirectionById(addressId);
   }
 }

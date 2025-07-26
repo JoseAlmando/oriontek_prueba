@@ -3,7 +3,7 @@ package com.jdomique.directionmanager.direction_manager.client.commands.controll
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jdomique.directionmanager.direction_manager.client.commands.dto.AddDirectionClientCommand;
+import com.jdomique.directionmanager.direction_manager.client.commands.dto.AddAddressClientCommand;
 import com.jdomique.directionmanager.direction_manager.client.commands.dto.CreateClientCommand;
 import com.jdomique.directionmanager.direction_manager.client.commands.dto.DeleteClientCommand;
 import com.jdomique.directionmanager.direction_manager.client.commands.dto.UpdateClientCommand;
@@ -40,8 +40,8 @@ public class ClientCommandController {
     return ResponseEntity.status(deleted ? 200 : 404).body(deleted);
   }
 
-  @PostMapping("/direction")
-  public ResponseEntity<?> postDirection(@RequestBody ClientEvent<AddDirectionClientCommand> event) {
-    return ResponseEntity.ok(clientCommandService.postDirection(event));
+  @PostMapping("/address")
+  public ResponseEntity<?> postAddress(@RequestBody ClientEvent<AddAddressClientCommand> event) {
+    return ResponseEntity.ok(clientCommandService.postAddress(event));
   }
 }

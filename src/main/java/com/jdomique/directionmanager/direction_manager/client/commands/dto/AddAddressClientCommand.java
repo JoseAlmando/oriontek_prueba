@@ -1,5 +1,5 @@
 package com.jdomique.directionmanager.direction_manager.client.commands.dto;
 
-public record DeleteDirectionClientCommand(Long directionId) {
+public record AddAddressClientCommand(String clientId, String address) {
 
 }

@@ -12,17 +12,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "client_id", "direction" }))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "client_id", "address" }))
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DirectionCommand {
+public class AddressCommand {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String direction;
+  private String address;
 
   @ManyToOne
   private ClientCommand client;
